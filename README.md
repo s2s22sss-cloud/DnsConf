@@ -17,6 +17,8 @@
 
 [GitHub Actions](#github-actions-setup)
 
+📚 **Detailed documentation (in Russian):** [docs/](docs/README.md) — configuration reference, source parsing rules, troubleshooting, architecture, [known issues](docs/known-issues.md).
+
 ## Cloudflare vs NextDNS
 
 Both providers have free plans, but there are some limitations
@@ -122,7 +124,7 @@ For `BLOCK`:
 + If new domains are provided, they will be added
 + The rest block settings are kept untouched
 
-Previously generated data is removed **ONLY** when both `BLOCK` and `REDIRECT` sources were not provided.
+When both `BLOCK` and `REDIRECT` sources are not provided, the **entire** denylist and **all** rewrites of the profile are removed, including manually added entries.
 
 ## GitHub Actions setup
 
