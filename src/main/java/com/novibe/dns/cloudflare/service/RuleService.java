@@ -12,7 +12,9 @@ import lombok.SneakyThrows;
 import lombok.Synchronized;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -78,7 +80,8 @@ public class RuleService {
     }
 
     public List<GatewayRuleDto> obtainExistingRules() {
-        return cloudflareRuleClient.getRules().getResult();
+        List<GatewayRuleDto> rules = cloudflareRuleClient.getRules().getResult();
+        return new ArrayList<>(Objects.requireNonNullElse(rules, List.of()));
     }
 
     public List<GatewayRuleDto> removeOldRules(List<GatewayRuleDto> rules) {

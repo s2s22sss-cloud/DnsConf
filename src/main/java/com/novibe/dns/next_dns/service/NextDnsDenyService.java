@@ -21,8 +21,8 @@ public class NextDnsDenyService {
     public List<String> dropExistingDenys(List<String> newDenyList) {
         Log.io("Fetching existing denylist from NextDNS");
         List<DenyDto> existingDenyList = nextDnsDenyClient.fetchDenylist();
+        // Inactive entries are skipped too: they already exist, and their state may have been set manually
         Set<String> existingDomainsSet = existingDenyList.stream()
-                .filter(DenyDto::isActive)
                 .map(DenyDto::getId)
                 .collect(Collectors.toSet());
         newDenyList.removeIf(existingDomainsSet::contains);

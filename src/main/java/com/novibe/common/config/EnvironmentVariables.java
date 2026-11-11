@@ -16,6 +16,9 @@ public class EnvironmentVariables {
 
     public static final String REDIRECT = System.getenv("REDIRECT");
 
+    /** NextDNS only: remove the whole denylist and all rewrites of the profile before synchronization. */
+    public static final boolean NEXTDNS_CLEAR_ALL = "true".equalsIgnoreCase(System.getenv("NEXTDNS_CLEAR_ALL"));
+
     private static String extractMandatoryVariable(String key) {
         String env = System.getenv(key);
         if (isNull(env) || env.isBlank()) {

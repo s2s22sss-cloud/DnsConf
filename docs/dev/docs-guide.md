@@ -28,14 +28,14 @@ docs/
 | Изменение | Страницы |
 |---|---|
 | Новая или изменённая переменная окружения | `user/configuration.md`, `user/quick-start.md`, оба README |
-| Правила разбора hosts (`data_sources/*`) | `user/data-sources.md`, `dev/architecture.md` (конвейер) |
+| Правила разбора hosts (`data_sources/*`) | `user/data-sources.md`, `dev/architecture.md` (конвейер), тесты в `src/test` |
 | Логика Cloudflare (`dns/cloudflare/**`) | `user/cloudflare.md`, `dev/architecture.md`, `dev/api-reference.md` |
 | Логика NextDNS (`dns/next_dns/**`) | `user/nextdns.md`, `dev/architecture.md`, `dev/api-reference.md` |
 | Сообщения об ошибках, коды выхода | `user/troubleshooting.md` |
 | Версия Java, зависимости, `pom.xml` | `dev/development.md`, `user/local-run.md` |
 | Расписание, окружение в workflow | `user/quick-start.md`, `dev/development.md` (CI) |
 | Новый провайдер | см. [adding-provider.md](adding-provider.md#6-документация) |
-| Исправлена ошибка из known-issues | удалить пункт из `known-issues.md` и поправить ссылки на него |
+| Исправлена ошибка из known-issues | перенести пункт в раздел «Исправлено» в `known-issues.md` и поправить ссылки на него |
 
 ## Шаблон страницы
 

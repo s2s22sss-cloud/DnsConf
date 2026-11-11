@@ -166,18 +166,12 @@ public class ListService {
         return urlsToBlock.stream().map(Item::new).toList();
     }
 
-    private static <T> List<List<T>> cutChunks(List<T> list) {
-        final int chunkSize = 1000;
-        List<List<T>> chunks = new ArrayList<>();
-        if (list.size() <= chunkSize) {
-            chunks = List.of(list);
+    static final int CHUNK_SIZE = 1000;
 
-        } else {
-            for (int i = 0; list.size() > i + chunkSize; i += chunkSize) {
-                chunks.add(list.subList(i, i + chunkSize));
-            }
-            int tail = list.size() % chunkSize;
-            chunks.add(list.subList(list.size() - tail, list.size()));
+    static <T> List<List<T>> cutChunks(List<T> list) {
+        List<List<T>> chunks = new ArrayList<>();
+        for (int from = 0; from < list.size(); from += CHUNK_SIZE) {
+            chunks.add(list.subList(from, Math.min(from + CHUNK_SIZE, list.size())));
         }
         return chunks;
     }

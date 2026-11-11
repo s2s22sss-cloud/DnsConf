@@ -124,7 +124,7 @@ For `BLOCK`:
 + If new domains are provided, they will be added
 + The rest block settings are kept untouched
 
-When both `BLOCK` and `REDIRECT` sources are not provided, the **entire** denylist and **all** rewrites of the profile are removed, including manually added entries.
+When neither `BLOCK` nor `REDIRECT` is provided, nothing is changed. To remove the **entire** denylist and **all** rewrites of the profile (including manually added entries), set **environment variable** `NEXTDNS_CLEAR_ALL=true`; it runs before synchronization, so use it for a single run only.
 
 ## GitHub Actions setup
 

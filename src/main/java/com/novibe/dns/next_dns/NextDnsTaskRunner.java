@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.novibe.common.config.EnvironmentVariables.BLOCK;
+import static com.novibe.common.config.EnvironmentVariables.NEXTDNS_CLEAR_ALL;
 import static com.novibe.common.config.EnvironmentVariables.REDIRECT;
 
 @Service
@@ -31,12 +32,25 @@ public class NextDnsTaskRunner implements DnsTaskRunner {
 
         Log.global("NextDNS");
         Log.common("""
-        Script behaviour: old block/redirect settings are about to be updated via provided block/redirect sources.
-        If no sources provided, then all NextDNS settings will be removed.
-        If provided only one type of sources, related settings will be updated; another type remain untouched.
+        Script behaviour: block/redirect settings are updated via provided block/redirect sources.
+        New domains are added, rewrites with a changed IP are updated, other entries remain untouched.
+        If only one type of sources is provided, another type remains untouched.
+        Set NEXTDNS_CLEAR_ALL=true to remove the whole denylist and all rewrites before synchronization.
         NextDNS API rate limiter reset config: 60 seconds after the last request""");
 
         List<String> blockSources = EnvParser.parse(BLOCK);
+        List<String> rewriteSources = EnvParser.parse(REDIRECT);
+
+        if (NEXTDNS_CLEAR_ALL) {
+            Log.step("Remove all denylist and rewrites settings (NEXTDNS_CLEAR_ALL=true)");
+            nextDnsDenyService.removeAll();
+            nextDnsRewriteService.removeAll();
+        } else if (blockSources.isEmpty() && rewriteSources.isEmpty()) {
+            Log.fail("""
+                    No block or rewrite sources provided: nothing to do.
+                    To remove all NextDNS denylist and rewrites settings, set NEXTDNS_CLEAR_ALL=true""");
+        }
+
         if (!blockSources.isEmpty()) {
             Log.step("Obtain block lists from %s sources".formatted(blockSources.size()));
             List<String> blocks = blockListsLoader.fetchWebsites(blockSources);
@@ -49,10 +63,8 @@ public class NextDnsTaskRunner implements DnsTaskRunner {
             Log.fail("No block sources provided");
         }
 
-        List<String> rewriteSources = EnvParser.parse(REDIRECT);
         if (!rewriteSources.isEmpty()) {
-
-            Log.step("Obtain rewrite lists from %s sources".formatted(blockSources.size()));
+            Log.step("Obtain rewrite lists from %s sources".formatted(rewriteSources.size()));
             List<HostsOverrideListsLoader.BypassRoute> overrides = overrideListsLoader.fetchWebsites(rewriteSources);
 
             Log.step("Prepare rewrites");
@@ -63,12 +75,6 @@ public class NextDnsTaskRunner implements DnsTaskRunner {
             nextDnsRewriteService.saveRewrites(createRewriteDtos);
         } else {
             Log.fail("No rewrite sources provided");
-        }
-
-        if (blockSources.isEmpty() && rewriteSources.isEmpty()) {
-            Log.step("Remove settings");
-            nextDnsDenyService.removeAll();
-            nextDnsRewriteService.removeAll();
         }
 
         Log.global("FINISHED");

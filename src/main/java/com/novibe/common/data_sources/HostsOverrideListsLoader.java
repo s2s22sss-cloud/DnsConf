@@ -2,8 +2,9 @@ package com.novibe.common.data_sources;
 
 import org.springframework.stereotype.Service;
 
-import java.util.function.Predicate;
+import java.util.stream.Stream;
 
+/** Loads redirects: lines pointing domains to a routable IP address. */
 @Service
 public class HostsOverrideListsLoader extends ListLoader<HostsOverrideListsLoader.BypassRoute> {
 
@@ -16,16 +17,11 @@ public class HostsOverrideListsLoader extends ListLoader<HostsOverrideListsLoade
     }
 
     @Override
-    protected Predicate<String> filterRelatedLines() {
-        return line -> !HostsBlockListsLoader.isBlock(line);
-    }
-
-    @Override
-    protected BypassRoute toObject(String line) {
-        int delimiter = line.indexOf(" ");
-        String ip = line.substring(0, delimiter++);
-        String website = removeWWW(line.substring(delimiter).strip());
-        return new BypassRoute(ip, website);
+    protected Stream<BypassRoute> toObjects(HostsLine line) {
+        if (!line.isOverride()) {
+            return Stream.empty();
+        }
+        return line.domains().stream().map(domain -> new BypassRoute(line.ip(), domain));
     }
 
 }
