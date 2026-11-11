@@ -12,7 +12,7 @@
 mvn -B clean package
 ```
 
-Результат — `target/dns-block-and-redirect-configurer-1.0-SNAPSHOT.jar`
+Сборка запускает и тесты. Результат — `target/dns-block-and-redirect-configurer-1.0-SNAPSHOT.jar`
 со всеми зависимостями внутри (maven-shade-plugin).
 
 ## Запуск

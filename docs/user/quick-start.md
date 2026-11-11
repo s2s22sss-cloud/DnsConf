@@ -32,6 +32,9 @@
    - `REDIRECT` — ссылки на hosts-файлы для перенаправлений через запятую;
    - `BLOCK` — ссылки на hosts-файлы для блокировок через запятую.
 
+   Для NextDNS есть необязательная `NEXTDNS_CLEAR_ALL` — см.
+   [полная очистка](nextdns.md#полная-очистка-nextdns_clear_all).
+
    `REDIRECT` и `BLOCK` можно не задавать. Что произойдёт без них, зависит от
    провайдера — см. [справочник переменных](configuration.md).
 
@@ -41,8 +44,8 @@
 https://raw.githubusercontent.com/Internet-Helper/GeoHideDNS/refs/heads/main/hosts/hosts
 ```
 
-> Ставьте ссылки через запятую **без пробелов** и только прямые ссылки на файл
-> (`raw.githubusercontent.com`, а не `github.com/.../blob/...`). Почему — в разделе
+> Используйте прямые ссылки на файл (`raw.githubusercontent.com`, а не
+> `github.com/.../blob/...`). Подробнее — в разделе
 > [Источники данных](data-sources.md#требования-к-ссылкам).
 
 ## 4. Запустите
